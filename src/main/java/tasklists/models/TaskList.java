@@ -8,6 +8,9 @@ public interface TaskList {
 
 	List<Task> getTasks();
 	
+	void addTask(Task task);
+	
 	int getId();
 
+	void setName(String name);
 }

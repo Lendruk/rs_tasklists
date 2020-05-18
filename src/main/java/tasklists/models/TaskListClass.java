@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +19,8 @@ public class TaskListClass implements TaskList {
 	@GeneratedValue(generator="increment")
 	@GenericGenerator(name="increment", strategy="increment")
 	private int id;
+	
+	@Column(name = "NAME")
 	private String name;
 	
 	@ElementCollection
@@ -31,6 +34,10 @@ public class TaskListClass implements TaskList {
 		super();
 	}
 	
+	public void addTask(Task task) {
+		this.tasks.add(task);
+	}
+	
 	public TaskListClass(String name) {
 		this.name = name;
 		this.tasks = new ArrayList<Task>();
@@ -38,6 +45,10 @@ public class TaskListClass implements TaskList {
 
 	public int getId() {
 		return id;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getName() {

@@ -13,7 +13,7 @@ public interface TaskListController {
 
 	boolean hasTaskList(String name);
 
-	String createTaskList(String name);
+	TaskList createTaskList(String name);
 
 	TaskList getTaskList(String name);
 
@@ -29,7 +29,7 @@ public interface TaskListController {
 
 	void changeTaskStatus(String taskListId, String taskId, String status);
 
-	String createTask(String taskListId, String description);
+	TaskList createTask(String taskListId, String description);
 	
 	Task getTask(String taskListId, String taskId);
 

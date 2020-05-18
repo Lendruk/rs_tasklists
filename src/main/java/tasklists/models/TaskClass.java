@@ -1,5 +1,6 @@
 package tasklists.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,7 +13,11 @@ public class TaskClass implements Task {
 	@GeneratedValue(generator="increment")
 	@GenericGenerator(name="increment", strategy="increment")
 	private int id;
+	
+	@Column(name = "DESCRIPTION")
 	private String description;
+	
+	@Column(name = "STATUS")
 	private String status; // "doing", "done"
 	
 	public TaskClass(String description) {
@@ -22,6 +27,10 @@ public class TaskClass implements Task {
 
 	public TaskClass() {
 		super();
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public int getId() {
