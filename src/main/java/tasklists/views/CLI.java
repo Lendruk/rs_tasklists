@@ -45,7 +45,7 @@ public class CLI {
 					System.out.println("Task lisk already exists.");
 				}
 				else {
-					taskListId = controller.createTaskList(name);
+					taskListId = controller.createTaskList(name).getId() + "";
 					System.out.println("Task list " +taskListId+ " successfully created.");
 				}
 			break;
@@ -83,7 +83,7 @@ public class CLI {
 					System.out.println("Task lisk does not exist.");
 				}
 				else {
-					taskId = controller.createTask(taskListId, description);
+					taskId = controller.createTask(taskListId, description).getId() +"";
 					System.out.println("Task " + taskId + " added to task list " + taskListId);
 				}
 			break;

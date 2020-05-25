@@ -42,6 +42,27 @@ public class TaskListControllerClass implements TaskListController {
 		return list;
 	}
 	
+	public void updateTask(String listId, String taskId, String description, String status) {
+		Session session = sessionFactory.openSession();
+		
+		session.beginTransaction();
+		TaskList list = session.get(TaskList.class, listId);
+
+		
+		for(Task task : list.getTasks()) {
+			if(task.getId() == Integer.parseInt(taskId)) {
+				task.setDescription(description);
+				task.setStatus(status);
+			}
+		}
+		
+		session.update("TaskList", list);
+		
+		session.getTransaction().commit();
+		session.close();
+		
+	}
+	
 	public void writeTaskList(TaskList taskList) {
 		// TODO: change object id
         Session session = sessionFactory.openSession();
@@ -215,6 +236,16 @@ public class TaskListControllerClass implements TaskListController {
 		session.close();
 		
 		return taskList;
+	}
+	
+	public void putTaskList(Class<? extends TaskList> list) {
+		Session session = sessionFactory.openSession();
+		
+		session.beginTransaction();
+		
+		session.update("TaskList", list);		
+		session.getTransaction().commit();
+		session.close();
 	}
 
 	public Task getTask(String taskListId, String taskId) {
