@@ -34,10 +34,13 @@ public class TaskListAPI extends HttpServlet {
 		Iterator<String> iterator = reader.lines().iterator();
 		
 		String name = null;
+		int line = 0;
 		while(iterator.hasNext()) {
-			name = iterator.next();
+			if(line == 1) {
+				name = iterator.next();
+			}
+			line++;
 		}
-		
 		if(name != null) {
 			controller.createTaskList(name);			
 		}
