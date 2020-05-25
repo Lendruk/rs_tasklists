@@ -35,7 +35,7 @@ public interface TaskListController {
 
 	void deleteTaskList(String Id);
 	
-	void putTaskList(Class<? extends TaskList> list);
+	void putTaskList(TaskList list);
 	
 	void updateTask(String listId, String taskId, String description, String status);
 	

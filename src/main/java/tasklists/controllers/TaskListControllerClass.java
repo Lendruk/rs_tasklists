@@ -13,7 +13,6 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import tasklists.models.Task;
 import tasklists.models.TaskClass;
 import tasklists.models.TaskList;
-import tasklists.models.TaskListClass;
 
 public class TaskListControllerClass implements TaskListController {
 	private SessionFactory sessionFactory;
@@ -84,12 +83,7 @@ public class TaskListControllerClass implements TaskListController {
 		
 		session.beginTransaction();
 		
-		Iterator<TaskList> iterator = session.createQuery("SELECT * FROM TaskList", TaskList.class).getResultStream().iterator();
-		
-		List<TaskList> tasks = new ArrayList<TaskList>();
-		while(iterator.hasNext()) {
-			tasks.add(iterator.next());
-		}
+		List<TaskList> tasks = session.createQuery("from TaskList", TaskList.class).list();
 		
 		return tasks;
 	}
@@ -116,7 +110,7 @@ public class TaskListControllerClass implements TaskListController {
 	}
 
 	public TaskList createTaskList(String name) {
-		TaskList taskList = new TaskListClass(name);
+		TaskList taskList = new TaskList(name);
 		this.writeTaskList(taskList);
 		return taskList;
 	}
@@ -238,7 +232,7 @@ public class TaskListControllerClass implements TaskListController {
 		return taskList;
 	}
 	
-	public void putTaskList(Class<? extends TaskList> list) {
+	public void putTaskList(TaskList list) {
 		Session session = sessionFactory.openSession();
 		
 		session.beginTransaction();

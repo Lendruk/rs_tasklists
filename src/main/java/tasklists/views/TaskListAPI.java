@@ -58,16 +58,10 @@ public class TaskListAPI extends HttpServlet {
 	// Put TaskList
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		BufferedReader reader = req.getReader();
-		Iterator<String> iterator = reader.lines().iterator();
+		String id = req.getParameter("id");
+		String name = req.getParameter("name");
 		
-		String taskList = null;
-		while(iterator.hasNext()) {
-			taskList = iterator.next();
-		}
-		
-		Class<? extends TaskList> list =  (Class<? extends TaskList>) reader.getClass();
-		
+		TaskList list = new TaskList();
 		controller.putTaskList(list);
 	}
 	

@@ -1,16 +1,63 @@
 package tasklists.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public interface TaskList {
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-	String getName();
+import org.hibernate.annotations.GenericGenerator;
 
-	List<Task> getTasks();
+@Entity
+@Table(name = "tasklist")
+public class TaskList {
+	@Id
+	@GeneratedValue(generator="increment")
+	@GenericGenerator(name="increment", strategy="increment")
+	private int id;
 	
-	void addTask(Task task);
+	@Column(name = "NAME")
+	private String name;
 	
-	int getId();
+	@ElementCollection
+	@OneToMany(
+		    orphanRemoval = true,
+		    cascade = CascadeType.ALL,
+		    targetEntity = TaskClass.class)
+	private List<Task> tasks;
+	
+	public TaskList() {
+		super();
+	}
+	
+	public void addTask(Task task) {
+		this.tasks.add(task);
+	}
+	
+	public TaskList(String name) {
+		this.name = name;
+		this.tasks = new ArrayList<Task>();
+	}
 
-	void setName(String name);
+	public int getId() {
+		return id;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public List<Task> getTasks() {
+		return this.tasks;
+	}
 }
