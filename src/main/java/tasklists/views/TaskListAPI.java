@@ -23,7 +23,7 @@ import tasklists.models.Task;
 import tasklists.models.TaskList;
 
 
-@WebServlet("/lists")
+@WebServlet("/lists/*")
 public class TaskListAPI extends HttpServlet {
 	TaskListController controller = new TaskListControllerClass();
 	
@@ -32,7 +32,7 @@ public class TaskListAPI extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		BufferedReader reader = req.getReader();
 		Iterator<String> iterator = reader.lines().iterator();
-		
+		// req.getRequestURI() --> get the entire URI
 		String name = null;
 		int line = 0;
 		while(iterator.hasNext()) {
