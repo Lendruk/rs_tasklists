@@ -47,9 +47,22 @@ public class TaskList {
 		this.name = name;
 		this.tasks = new ArrayList<Task>();
 	}
+	
+	public TaskList(String name, List<Task> tasks) {
+		this.name = name;
+		this.tasks = tasks;
+	}
+	
+	public void setTasks(List<Task> tasks) {
+		this.tasks = tasks;
+	}
 
 	public int getId() {
 		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public void setName(String name) {

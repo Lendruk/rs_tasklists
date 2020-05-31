@@ -11,5 +11,7 @@ public interface Task {
 	void setDescription(String description);
 	
 	void setStatus(String status);
+	
+	void setId(int id);
 
 }

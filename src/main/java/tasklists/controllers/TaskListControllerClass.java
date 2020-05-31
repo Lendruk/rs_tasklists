@@ -98,12 +98,12 @@ public class TaskListControllerClass implements TaskListController {
 		return hasList;
 	}
 
-	public boolean hasTaskList(String name) {
+	public boolean hasTaskList(String id) {
 		Session session = sessionFactory.openSession();
 		
 		session.beginTransaction();
 		
-		Iterator<TaskList> iterator = session.createQuery("SELECT * FROM TaskList WHERE name ="+name, TaskList.class).getResultStream().iterator();
+		Iterator<TaskList> iterator = session.createQuery("from TaskList list where list.id like '"+id, TaskList.class).getResultStream().iterator();
 		
 		TaskList lst = iterator.next();
 		return lst != null;
@@ -115,25 +115,16 @@ public class TaskListControllerClass implements TaskListController {
 		return taskList;
 	}
 
-	public TaskList getTaskList(String name) {
+	public TaskList getTaskList(String id) {
 		Session session = sessionFactory.openSession();
 		
 		session.beginTransaction();
-		
-		Iterator<TaskList> iterator = session.createQuery("SELECT * FROM TaskList WHERE name ="+name, TaskList.class).getResultStream().iterator();
-		
+		Iterator<TaskList> iterator = session.createQuery("from TaskList list where list.id like '"+id+"'", TaskList.class).getResultStream().iterator();
+		TaskList list = null;
 		if(iterator.hasNext()) {
-			return iterator.next();
+			list = iterator.next();
 		}
 		
-		return null;
-	}
-	
-	public TaskList getTaskListById(String id) {
-		Session session = sessionFactory.openSession();
-		
-		session.beginTransaction();
-		TaskList list = session.get(TaskList.class, id);
 		session.getTransaction().commit();
 		session.close();
 		
@@ -150,12 +141,18 @@ public class TaskListControllerClass implements TaskListController {
 	}
 	
 	public void deleteTask(String taskListId, String taskId) {
-		TaskList list = this.getTaskListById(taskListId);
+		TaskList list = this.getTaskList(taskListId);
 		
 		List<Task> tasks = list.getTasks();
+		Session session = sessionFactory.openSession();
+		
+		session.beginTransaction();
 		for(Task task : tasks) {
 			if(task.getId() == Integer.parseInt(taskId)) {
-				tasks.remove(task);
+				session.delete("TaskClass", task);
+				
+				session.getTransaction().commit();
+				session.close();
 				break;
 			}
 		}
@@ -164,7 +161,7 @@ public class TaskListControllerClass implements TaskListController {
 	}
 	
 	public boolean hasTask(String taskListId, String taskId) {
-		TaskList tasks = this.getTaskListById(taskListId);
+		TaskList tasks = this.getTaskList(taskListId);
 		
 		for(Task task : tasks.getTasks()) {
 			if(task.getId() == Integer.parseInt(taskId)) {
@@ -175,7 +172,7 @@ public class TaskListControllerClass implements TaskListController {
 	}
 
 	public boolean hasTaskInList(String taskListId, String taskId) {
-		TaskList list = this.getTaskListById(taskListId);
+		TaskList list = this.getTaskList(taskListId);
 		
 		for(Task task : list.getTasks()) {
 			if(task.getId() == Integer.parseInt(taskId)) {
@@ -216,12 +213,12 @@ public class TaskListControllerClass implements TaskListController {
 	}
 
 	public TaskList createTask(String taskListId, String description) {
-		TaskList taskList = getTaskListById(taskListId);
+		TaskList taskList = getTaskList(taskListId);
 		Task task = new TaskClass(description);
 		
-		taskList.addTask(task);
 		Session session = sessionFactory.openSession();
 		
+		taskList.addTask(task);
 		session.beginTransaction();
 		
 		session.save("TaskList", taskList);
@@ -262,10 +259,11 @@ public class TaskListControllerClass implements TaskListController {
 	}
 
 	public void deleteTaskList(String id) {
+		TaskList list = this.getTaskList(id);
 		Session session = sessionFactory.openSession();
 		
 		session.beginTransaction();
-		session.delete("TaskList", this.getTaskListById(id));
+		session.delete("TaskList", list);
 		session.getTransaction().commit();
 		session.close();
 

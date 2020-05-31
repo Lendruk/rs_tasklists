@@ -11,11 +11,11 @@ public interface TaskListController {
 
 	boolean hasTasksLists();
 
-	boolean hasTaskList(String name);
+	boolean hasTaskList(String id);
 
 	TaskList createTaskList(String name);
 
-	TaskList getTaskList(String name);
+	TaskList getTaskList(String id);
 
 	void changeTaskListName(String name, String newName);
 	
